@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adventskalender</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ============================================================
+       FARGER PÅ LUKENE
+       Hver oppføring er [bakgrunnsfarge, tekstfarge].
+       Rekkefølgen gjentas for alle 24 luker (luke 1 = indeks 0, osv.)
+       Du kan endre hex-verdiene fritt, eller legge til/fjerne rader.
+    ============================================================ */
+    :root {
+      --door-colors: none; /* se DOOR_COLORS i JavaScript-seksjonen under */
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #0e1a14;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 2rem 1rem 4rem;
+    }
+
+    .cal-root { width: 100%; max-width: 720px; }
+
+    /* ── Topp-seksjon ── */
+    .cal-header { text-align: center; margin-bottom: 2.5rem; }
+
+    .snow-bar { display: flex; justify-content: center; gap: 8px; margin-bottom: 1.25rem; opacity: 0.5; }
+    .snow-dot { width: 5px; height: 5px; border-radius: 50%; background: #a8d5b5; animation: float 3s ease-in-out infinite; }
+    .snow-dot:nth-child(2){animation-delay:.5s} .snow-dot:nth-child(3){animation-delay:1s}
+    .snow-dot:nth-child(4){animation-delay:1.5s} .snow-dot:nth-child(5){animation-delay:2s}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+
+    /* ============================================================
+       OVERSKRIFT OG UNDERTITTEL
+       Endre tekst i HTML-elementene lengre nede i <body>.
+       Endre utseende her:
+    ============================================================ */
+    .cal-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(26px, 5vw, 38px);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      color: #e8f5ee;
+      margin-bottom: 6px;
+    }
+    .cal-subtitle {
+      font-size: 12px;
+      color: #6aab82;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    /* ── Rutenett ── */
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+    }
+
+    @media (max-width: 500px) {
+      .cal-grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    }
+
+    /* ── Luke (dør) ── */
+    .door { aspect-ratio: 1; position: relative; cursor: pointer; border-radius: 10px; overflow: hidden; }
+    .door.locked { cursor: not-allowed; }
+
+    .door-scene { position: absolute; inset: 0; border-radius: 10px; overflow: hidden; }
+
+    .door-back {
+      position: absolute; inset: 0;
+      background: #111d16;
+      border: 0.5px solid #2a4030;
+      border-radius: 10px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 6px; text-align: center; z-index: 1;
+    }
+    .door-content-day { font-size: 9px; letter-spacing: 0.07em; color: #5a8a6a; margin-bottom: 4px; text-transform: uppercase; }
+    .door-content-text { font-size: 10px; color: #8ac8a0; line-height: 1.35; }
+
+    .door-left, .door-right {
+      position: absolute; top: 0; bottom: 0; width: 50%; z-index: 2;
+      display: flex; align-items: center; justify-content: center;
+      border: 0.5px solid rgba(0,0,0,0.12);
+      transition: transform 0.65s cubic-bezier(0.4,0,0.2,1);
+      backface-visibility: hidden; overflow: hidden;
+    }
+    .door-left  { left: 0;  border-radius: 10px 0 0 10px; transform-origin: left center; }
+    .door-right { right: 0; border-radius: 0 10px 10px 0; transform-origin: right center; }
+    .door.open .door-left  { transform: perspective(500px) rotateY(-115deg); }
+    .door.open .door-right { transform: perspective(500px) rotateY(115deg); }
+    .door.locked .door-left, .door.locked .door-right { opacity: 0.45; }
+
+    .door-num-wrap {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none;
+    }
+    .door-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(20px, 3.5vw, 30px);
+      font-weight: 400;
+      line-height: 1;
+      white-space: nowrap;
+      position: absolute;
+    }
+
+    .divider {
+      position: absolute; top: 0; bottom: 0; left: 50%;
+      width: 1px; background: rgba(0,0,0,0.15); z-index: 3;
+      pointer-events: none; transition: opacity 0.4s;
+    }
+    .door.open .divider { opacity: 0; }
+
+    /* ── Modal ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.65); z-index: 100;
+      align-items: center; justify-content: center;
+    }
+    .modal-overlay.visible { display: flex; }
+
+    .modal {
+      background: #111d16;
+      border: 0.5px solid #2a4030;
+      border-radius: 16px;
+      padding: 2rem;
+      max-width: 400px; width: 92%;
+      position: relative;
+      animation: modal-in .32s cubic-bezier(0.34,1.56,0.64,1);
+      max-height: 90vh; overflow-y: auto;
+    }
+    @keyframes modal-in{from{opacity:0;transform:scale(0.85) translateY(14px)}to{opacity:1;transform:scale(1) translateY(0)}}
+
+    .modal-day { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #5a8a6a; margin-bottom: .4rem; }
+    .modal-title { font-family: 'DM Serif Display', serif; font-size: 24px; font-weight: 400; margin: 0 0 1rem; color: #e8f5ee; line-height: 1.2; }
+    .modal-media { width: 100%; border-radius: 8px; margin-bottom: 1rem; display: block; }
+    .modal-video { width: 100%; border-radius: 8px; margin-bottom: 1rem; display: block; background: #000; }
+    .modal-text { font-size: 14px; line-height: 1.8; color: #8ac8a0; }
+
+    .modal-close {
+      position: absolute; top: 1rem; right: 1rem;
+      width: 30px; height: 30px;
+      border: 0.5px solid #2a4030; border-radius: 50%;
+      background: #1a2e20; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; color: #6aab82; line-height: 1;
+    }
+    .modal-close:hover { background: #223828; }
+  </style>
+</head>
+<body>
+
+  <div class="cal-root">
+    <div class="cal-header">
+      <div class="snow-bar">
+        <div class="snow-dot"></div><div class="snow-dot"></div><div class="snow-dot"></div>
+        <div class="snow-dot"></div><div class="snow-dot"></div>
+      </div>
+
+      <!-- ============================================================
+           OVERSKRIFT OG UNDERTITTEL — endre teksten her
+      ============================================================ -->
+      <h1 class="cal-title">Advent 2024</h1>
+      <p class="cal-subtitle">December — a door a day</p>
+
+    </div>
+    <div class="cal-grid" id="grid"></div>
+  </div>
+
+  <div class="modal-overlay" id="overlay">
+    <div class="modal" id="modal">
+      <button class="modal-close" id="modal-close">✕</button>
+      <p class="modal-day" id="modal-day"></p>
+      <h2 class="modal-title" id="modal-title"></h2>
+      <img class="modal-media" id="modal-img" src="" alt="" style="display:none" />
+      <video class="modal-video" id="modal-video" controls style="display:none">
+        <source id="modal-video-src" src="" />
+      </video>
+      <p class="modal-text" id="modal-text"></p>
+    </div>
+  </div>
+
+  <script>
+
+    /* ============================================================
+       INNSTILLING: Hvilken dato er "i dag"?
+       Normalt settes denne automatisk. Sett til et tall (1-24) for
+       å overstyre, f.eks. under testing: const TODAY = 5;
+    ============================================================ */
+    const now = new Date();
+    const TODAY = (now.getMonth() === 11) ? now.getDate() : 0;
+    // I desember: viser luker t.o.m. dagens dato.
+    // Utenfor desember: TODAY = 0 → alle luker er låst (for testing, sett manuelt over).
+
+
+    /* ============================================================
+       FARGER PÅ LUKENE
+       Format: ['bakgrunnsfarge', 'tekstfarge']
+       Rekkefølgen gjentas syklisk for alle 24 luker.
+       Legg til, fjern eller endre fritt.
+    ============================================================ */
+    const DOOR_COLORS = [
+      ['#1a3a2a', '#a8d5b5'],   // mørk grønn / lys grønn
+      ['#3a1a2a', '#f0b8cc'],   // mørk rød   / lys rosa
+      ['#1a2a3a', '#b0c8e8'],   // mørk blå   / lys blå
+      ['#3a2a10', '#f0d090'],   // mørk brun  / gull
+      ['#2a1a3a', '#d0b0f0'],   // mørk lilla / lys lilla
+      ['#1a3030', '#a0e0e0'],   // mørk teal  / lys teal
+      ['#3a1a1a', '#f0b0b0'],   // mørk rød   / lys rød
+      ['#1a3a1a', '#a0f0b0'],   // mørk grønn / mint
+    ];
+
+
+    /* ============================================================
+       INNHOLD I LUKENE
+       Nøkkelen er lukenummeret (1–24).
+       Felter:
+         title  — tittel som vises øverst i modalen
+         text   — brødtekst
+         img    — relativ sti til bilde, f.eks. "images/luke1.jpg"
+                  eller null for ingen bilde
+         video  — relativ sti til video, f.eks. "video/luke1.mp4"
+                  eller null for ingen video
+                  (støtter også YouTube-embed-URL om du foretrekker det)
+
+       Tips for filstruktur:
+         index.html
+         images/
+           luke1.jpg
+           luke4.jpg
+           ...
+         video/
+           luke8.mp4
+           ...
+    ============================================================ */
+    const CONTENT = {
+      1:  {
+        title: "God start!",
+        text:  "Desember er her. Ta deg tid til en kopp kaffe og nyt morgenen.",
+        img:   null,
+        video: null,
+      },
+      2:  {
+        title: "En liten tanke",
+        text:  "Hva er du takknemlig for i dag? Skriv ned tre ting.",
+        img:   null,
+        video: null,
+      },
+      3:  {
+        title: "Musikk",
+        text:  "Sett på favorittjulesangen din og dans litt i stua.",
+        img:   null,
+        video: null,
+      },
+      4:  {
+        title: "Ute i naturen",
+        text:  "En kort spasertur i vinterkulden gjør underverker for humøret.",
+        img:   "images/luke4.jpg",
+        video: null,
+      },
+      5:  {
+        title: "Sjokolade",
+        text:  "Du fortjener en bit av noe godt i dag. Ingen unnskyldning trengs.",
+        img:   null,
+        video: null,
+      },
+      6:  {
+        title: "Julenissen",
+        text:  "Bare 19 dager til jul. Er du klar?",
+        img:   null,
+        video: null,
+      },
+      7:  {
+        title: "Lysene",
+        text:  "Tenn et lys i kveld. La det varme rommet litt ekstra.",
+        img:   "images/luke7.jpg",
+        video: null,
+      },
+      8:  {
+        title: "Dagens overraskelse",
+        text:  "Her er en liten hilsen til deg på denne dagen.",
+        img:   null,
+        video: "video/luke8.mp4",
+      },
+      9:  { title: "Luke 9",  text: "Fyll inn innhold her.", img: null, video: null },
+      10: { title: "Luke 10", text: "Fyll inn innhold her.", img: null, video: null },
+      11: { title: "Luke 11", text: "Fyll inn innhold her.", img: null, video: null },
+      12: { title: "Luke 12", text: "Fyll inn innhold her.", img: null, video: null },
+      13: { title: "Luke 13", text: "Fyll inn innhold her.", img: null, video: null },
+      14: { title: "Luke 14", text: "Fyll inn innhold her.", img: null, video: null },
+      15: { title: "Luke 15", text: "Fyll inn innhold her.", img: null, video: null },
+      16: { title: "Luke 16", text: "Fyll inn innhold her.", img: null, video: null },
+      17: { title: "Luke 17", text: "Fyll inn innhold her.", img: null, video: null },
+      18: { title: "Luke 18", text: "Fyll inn innhold her.", img: null, video: null },
+      19: { title: "Luke 19", text: "Fyll inn innhold her.", img: null, video: null },
+      20: { title: "Luke 20", text: "Fyll inn innhold her.", img: null, video: null },
+      21: { title: "Luke 21", text: "Fyll inn innhold her.", img: null, video: null },
+      22: { title: "Luke 22", text: "Fyll inn innhold her.", img: null, video: null },
+      23: { title: "Luke 23", text: "Fyll inn innhold her.", img: null, video: null },
+      24: { title: "God jul!", text: "Gledesriktig jul til deg og dine. 🎄", img: null, video: null },
+    };
+
+
+    /* ============================================================
+       KALENDER-LOGIKK — ikke nødvendig å endre noe herfra og ned
+    ============================================================ */
+    const grid    = document.getElementById('grid');
+    const overlay = document.getElementById('overlay');
+
+    for (let d = 1; d <= 24; d++) {
+      const [bg, textCol] = DOOR_COLORS[(d - 1) % DOOR_COLORS.length];
+      const isSingle = d < 10;
+      const label    = String(d);
+
+      const door  = document.createElement('div');
+      const state = d < TODAY ? ' open' : d === TODAY ? ' today' : ' locked';
+      door.className = 'door' + state;
+
+      const scene = document.createElement('div');
+      scene.className = 'door-scene';
+
+      const back = document.createElement('div');
+      back.className = 'door-back';
+      if (d <= TODAY) {
+        const c = CONTENT[d];
+        back.innerHTML = `<p class="door-content-day">Des ${d}</p><p class="door-content-text">${c ? c.title : '...'}</p>`;
+      }
+
+      const divider = document.createElement('div');
+      divider.className = 'divider';
+
+      const leftHalf  = document.createElement('div');
+      leftHalf.className  = 'door-left';
+      leftHalf.style.background  = bg;
+
+      const rightHalf = document.createElement('div');
+      rightHalf.className = 'door-right';
+      rightHalf.style.background = bg;
+
+      if (isSingle) {
+        // enkeltsiffer: tallet strekker seg over begge halvdeler
+        const makeWrap = (side) => {
+          const w = document.createElement('div');
+          w.className = 'door-num-wrap';
+          const n = document.createElement('div');
+          n.className = 'door-num';
+          n.style.color = textCol;
+          n.textContent = label;
+          if (side === 'left')  { n.style.right = '0'; n.style.transform = 'translateX(50%)'; }
+          else                  { n.style.left  = '0'; n.style.transform = 'translateX(-50%)'; }
+          w.appendChild(n);
+          return w;
+        };
+        leftHalf.appendChild(makeWrap('left'));
+        rightHalf.appendChild(makeWrap('right'));
+      } else {
+        // tositret: første siffer til venstre, andre til høyre
+        const makeDigit = (ch, side) => {
+          const w = document.createElement('div');
+          w.className = 'door-num-wrap';
+          const n = document.createElement('div');
+          n.className = 'door-num';
+          n.style.color = textCol;
+          n.textContent = ch;
+          n.style[side === 'left' ? 'right' : 'left'] = '4px';
+          w.appendChild(n);
+          return w;
+        };
+        leftHalf.appendChild(makeDigit(label[0], 'left'));
+        rightHalf.appendChild(makeDigit(label[1], 'right'));
+      }
+
+      scene.appendChild(back);
+      scene.appendChild(leftHalf);
+      scene.appendChild(rightHalf);
+      scene.appendChild(divider);
+      door.appendChild(scene);
+
+      if (d <= TODAY) {
+        door.addEventListener('click', () => openDoor(d, door));
+      }
+
+      grid.appendChild(door);
+    }
+
+    function openDoor(d, doorEl) {
+      const c = CONTENT[d] || { title: `Luke ${d}`, text: 'Innhold kommer snart.', img: null, video: null };
+      document.getElementById('modal-day').textContent   = `${d}. desember`;
+      document.getElementById('modal-title').textContent = c.title;
+      document.getElementById('modal-text').textContent  = c.text;
+
+      const img = document.getElementById('modal-img');
+      if (c.img) { img.src = c.img; img.style.display = 'block'; }
+      else       { img.style.display = 'none'; }
+
+      const video = document.getElementById('modal-video');
+      const vs    = document.getElementById('modal-video-src');
+      if (c.video) { vs.src = c.video; video.load(); video.style.display = 'block'; }
+      else         { video.style.display = 'none'; video.pause(); }
+
+      overlay.classList.add('visible');
+      doorEl.classList.add('open');
+    }
+
+    function closeModal() {
+      overlay.classList.remove('visible');
+      document.getElementById('modal-video').pause();
+    }
+
+    document.getElementById('modal-close').addEventListener('click', closeModal);
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+
+  </script>
+</body>
+</html>
