@@ -158,6 +158,12 @@
     .door.open .divider { opacity: 0; }
 
     /* ── Modal ── */
+
+    .modal-text a {
+    color: #a8d5b5;
+    text-decoration: underline;
+    }
+
     .modal-overlay {
       display: none; position: fixed; inset: 0;
       background: rgba(0,0,0,0.65); z-index: 100;
@@ -282,9 +288,9 @@
     ============================================================ */
     const CONTENT = {
       1:  {
-        title: "God start!",
-        text:  "Desember er her. Ta deg tid til en kopp kaffe og nyt morgenen.",
-        img:   null,
+        title: "Første luke",
+        html:  'Desember her og tiden nytes. Ønsker du å gjøre livet til Support litt enklere? Les deg opp på hva BRUSE og Support gjør <a href="https://support.smnregnskap.no/hc/no/articles/12112097382172-Hva-gj%C3%B8r-BRUSE-og-hva-gj%C3%B8r-Support" target="_blank">her</a>.',
+        img:   "img/santa test.png",
         video: null,
       },
       2:  {
@@ -434,7 +440,11 @@
       const c = CONTENT[d] || { title: `Luke ${d}`, text: 'Innhold kommer snart.', img: null, video: null };
       document.getElementById('modal-day').textContent   = `${d}. desember`;
       document.getElementById('modal-title').textContent = c.title;
-      document.getElementById('modal-text').textContent  = c.text;
+      if (c.html) {
+         document.getElementById('modal-text').innerHTML = c.html;
+        } else {
+        document.getElementById('modal-text').textContent = c.text;
+        }
 
       const img = document.getElementById('modal-img');
       if (c.img) { img.src = c.img; img.style.display = 'block'; }
