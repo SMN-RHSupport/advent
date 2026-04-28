@@ -4,9 +4,37 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Adventskalender</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@100;300;500;700;900&display=swap" rel="stylesheet" />
+  <style>
+  @font-face {
+    font-family: 'Museo Sans';
+    src: url('font/Museo Sans 100.otf') format('opentype');
+    font-weight: 100;
+  }
+  @font-face {
+    font-family: 'Museo Sans';
+    src: url('font/Museo Sans 300.otf') format('opentype');
+    font-weight: 300;
+  }
+  @font-face {
+    font-family: 'Museo Sans';
+    src: url('font/Museo Sans 500.otf') format('opentype');
+    font-weight: 500;
+  }
+  @font-face {
+    font-family: 'Museo Sans';
+    src: url('font/Museo Sans 700.otf') format('opentype');
+    font-weight: 700;
+  }
+  @font-face {
+    font-family: 'Museo Sans';
+    src: url('font/Museo Sans 900.otf') format('opentype');
+    font-weight: 900;
+  }
+  </style>
+
+
+
   <style>
     /* ============================================================
        FARGER PÅ LUKENE
@@ -22,7 +50,7 @@
 
     body {
       font-family: 'DM Sans', sans-serif;
-      background: #0e1a14;
+      background: #f2f2f9;
       min-height: 100vh;
       display: flex;
       align-items: flex-start;
@@ -47,9 +75,9 @@
        Endre utseende her:
     ============================================================ */
     .cal-title {
-      font-family: 'DM Serif Display', serif;
+      font-family: 'Museo Sans', sans-serif;
       font-size: clamp(26px, 5vw, 38px);
-      font-weight: 400;
+      font-weight: 300;
       letter-spacing: -0.02em;
       color: #e8f5ee;
       margin-bottom: 6px;
