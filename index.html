@@ -79,7 +79,7 @@
       font-size: clamp(26px, 5vw, 38px);
       font-weight: 300;
       letter-spacing: -0.02em;
-      color: #6aab82;
+      color: #5a8a6a;
       margin-bottom: 6px;
     }
     .cal-subtitle {
@@ -87,6 +87,12 @@
       color: #6aab82;
       letter-spacing: 0.12em;
       text-transform: uppercase;
+    }
+
+    .cal-footer {
+      text-align: center;
+      margin-top: 20px;
+      color: #2a4030;
     }
 
     /* ── Rutenett ── */
@@ -189,7 +195,6 @@
   </style>
 </head>
 <body>
-
   <div class="cal-root">
     <div class="cal-header">
       <div class="snow-bar">
@@ -205,6 +210,7 @@
 
     </div>
     <div class="cal-grid" id="grid"></div>
+    <p class="cal-footer">Vi ønsker deg en gledelig jul 🎅</p>
   </div>
 
   <div class="modal-overlay" id="overlay">
@@ -218,9 +224,8 @@
       </video>
       <p class="modal-text" id="modal-text"></p>
     </div>
-    <p>Vi ønsker deg en gledelig jul 🎅</p>
   </div>
-
+     
   <script>
 
     /* ============================================================
