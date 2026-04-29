@@ -6,330 +6,177 @@
   <title>Adventskalender</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@100;300;500;700;900&display=swap" rel="stylesheet" />
   <style>
-  @font-face {
-    font-family: 'Museo Sans';
-    src: url('font/Museo Sans 100.otf') format('opentype');
-    font-weight: 100;
-  }
-  @font-face {
-    font-family: 'Museo Sans';
-    src: url('font/Museo Sans 300.otf') format('opentype');
-    font-weight: 300;
-  }
-  @font-face {
-    font-family: 'Museo Sans';
-    src: url('font/Museo Sans 500.otf') format('opentype');
-    font-weight: 500;
-  }
-  @font-face {
-    font-family: 'Museo Sans';
-    src: url('font/Museo Sans 700.otf') format('opentype');
-    font-weight: 700;
-  }
-  @font-face {
-    font-family: 'Museo Sans';
-    src: url('font/Museo Sans 900.otf') format('opentype');
-    font-weight: 900;
-  }
+  @font-face { font-family: 'Museo Sans'; src: url('font/Museo Sans 100.otf') format('opentype'); font-weight: 100; }
+  @font-face { font-family: 'Museo Sans'; src: url('font/Museo Sans 300.otf') format('opentype'); font-weight: 300; }
+  @font-face { font-family: 'Museo Sans'; src: url('font/Museo Sans 500.otf') format('opentype'); font-weight: 500; }
+  @font-face { font-family: 'Museo Sans'; src: url('font/Museo Sans 700.otf') format('opentype'); font-weight: 700; }
+  @font-face { font-family: 'Museo Sans'; src: url('font/Museo Sans 900.otf') format('opentype'); font-weight: 900; }
   </style>
-
-  
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap');
-
-  .header-wrap { text-align: center; padding: 2rem 0 1.5rem; font-family: 'DM Sans', sans-serif; }
-  .reindeer-row { display: flex; justify-content: center; align-items: flex-end; gap: 10px; margin-bottom: 1.25rem; height: 50px; }
-
-  .r-animal {
-    --flip: -1;
-    
-    transform: translateY(0) scaleX(var(--flip));
-    transform-origin: center;
-
-    animation: bob 3s ease-in-out infinite;
-    animation-fill-mode: both;;
-
-  }
-
-  .sled {
-    margin-bottom: -10px;
-  }
-
-  .rein1 { animation-delay: 0.0s; }
-  .rein2 { animation-delay: 0.3s; }
-  .rein3 { animation-delay: 0.6s; }
-  .rein4 { animation-delay: 0.9s; }
-  .sled  { animation-delay: 1.2s; }
-
-  @keyframes bob {
-    0%, 100% { transform: translateY(0)   scaleX(var(--flip)); }
-    50%      { transform: translateY(-6px) scaleX(var(--flip)); }
-  }
-
-  .cal-title { font-family: 'Museo Sans', sans-serif; font-size: 32px; font-weight: 300; letter-spacing: -0.02em; color: #3a6b4a; margin: 0 0 6px; }
-  .cal-subtitle { font-size: 11px; color: #7aaa88; letter-spacing: 0.14em; text-transform: uppercase; margin: 0; }
-</style>
-
-
   <style>
-    /* ============================================================
-       FARGER PÅ LUKENE
-       Hver oppføring er [bakgrunnsfarge, tekstfarge].
-       Rekkefølgen gjentas for alle 24 luker (luke 1 = indeks 0, osv.)
-       Du kan endre hex-verdiene fritt, eller legge til/fjerne rader.
-    ============================================================ */
-    :root {
-      --door-colors: none; /* se DOOR_COLORS i JavaScript-seksjonen under */
-    }
-
+    .header-wrap { text-align: center; padding: 2rem 0 1.5rem; font-family: 'DM Sans', sans-serif; }
+    .reindeer-row { display: flex; justify-content: center; align-items: flex-end; gap: 10px; margin-bottom: 1.25rem; height: 50px; }
+    .r-animal { --flip: -1; transform: translateY(0) scaleX(var(--flip)); transform-origin: center; animation: bob 3s ease-in-out infinite; animation-fill-mode: both; }
+    .sled { margin-bottom: -10px; }
+    .rein1 { animation-delay: 0.0s; } .rein2 { animation-delay: 0.3s; }
+    .rein3 { animation-delay: 0.6s; } .rein4 { animation-delay: 0.9s; }
+    .sled  { animation-delay: 1.2s; }
+    @keyframes bob { 0%, 100% { transform: translateY(0) scaleX(var(--flip)); } 50% { transform: translateY(-6px) scaleX(var(--flip)); } }
+    .cal-title { font-family: 'Museo Sans', sans-serif; font-size: 32px; font-weight: 300; letter-spacing: -0.02em; color: #3a6b4a; margin: 0 0 6px; }
+    .cal-subtitle { font-size: 11px; color: #7aaa88; letter-spacing: 0.14em; text-transform: uppercase; margin: 0; }
+  </style>
+  <style>
+    :root { --door-colors: none; }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Museo Sans', sans-serif;
-      font-weight: 100;
-      background: #f2f2f9;
-      min-height: 100vh;
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      padding: 2rem 1rem 4rem;
-    }
-
+    body { font-family: 'Museo Sans', sans-serif; font-weight: 100; background: #f2f2f9; min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding: 2rem 1rem 4rem; }
     .cal-root { width: 100%; max-width: 720px; }
-
-    /* ── Topp-seksjon ── */
     .cal-header { text-align: center; margin-bottom: 2.5rem; }
+    .cal-title { font-family: 'Museo Sans', sans-serif; font-size: clamp(26px, 5vw, 38px); font-weight: 500; letter-spacing: -0.02em; color: #5a8a6a; margin-bottom: 6px; }
+    .cal-subtitle { font-size: 12px; color: #6aab82; letter-spacing: 0.12em; text-transform: uppercase; }
+    .cal-footer { text-align: center; margin-top: 20px; color: #2a4030; }
+    .cal-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+    @media (max-width: 500px) { .cal-grid { grid-template-columns: repeat(4, 1fr); gap: 8px; } }
 
-    .snow-bar { display: flex; justify-content: center; gap: 8px; margin-bottom: 1.25rem; opacity: 0.5; }
-    .snow-dot { width: 5px; height: 5px; border-radius: 50%; background: #a8d5b5; animation: float 3s ease-in-out infinite; }
-    .snow-dot:nth-child(2){animation-delay:.5s} .snow-dot:nth-child(3){animation-delay:1s}
-    .snow-dot:nth-child(4){animation-delay:1.5s} .snow-dot:nth-child(5){animation-delay:2s}
-    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-
-    /* ============================================================
-       OVERSKRIFT OG UNDERTITTEL
-       Endre tekst i HTML-elementene lengre nede i <body>.
-       Endre utseende her:
-    ============================================================ */
-    .cal-title {
-      font-family: 'Museo Sans', sans-serif;
-      font-size: clamp(26px, 5vw, 38px);
-      font-weight: 500;
-      letter-spacing: -0.02em;
-      color: #5a8a6a;
-      margin-bottom: 6px;
-    }
-    .cal-subtitle {
-      font-size: 12px;
-      color: #6aab82;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    .cal-footer {
-      text-align: center;
-      margin-top: 20px;
-      color: #2a4030;
-    }
-
-    /* ── Rutenett ── */
-    .cal-grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 12px;
-    }
-
-    @media (max-width: 500px) {
-      .cal-grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
-    }
-
-    /* ── Luke (dør) ── */
     .door { aspect-ratio: 1; position: relative; cursor: pointer; border-radius: 10px; overflow: hidden; }
     .door.locked { cursor: not-allowed; }
-
     .door-scene { position: absolute; inset: 0; border-radius: 10px; overflow: hidden; }
-
-    .door-back {
-      position: absolute; inset: 0;
-      background: #111d16;
-      border: 0.5px solid #2a4030;
-      border-radius: 10px;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 6px; text-align: center; z-index: 1;
-    }
+    .door-back { position: absolute; inset: 0; background: #111d16; border: 0.5px solid #2a4030; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 6px; text-align: center; z-index: 1; }
     .door-content-day { font-size: 9px; letter-spacing: 0.07em; color: #5a8a6a; margin-bottom: 4px; text-transform: uppercase; }
     .door-content-text { font-size: 10px; color: #8ac8a0; line-height: 1.35; }
-
-    .door-left, .door-right {
-      position: absolute; top: 0; bottom: 0; width: 50%; z-index: 2;
-      display: flex; align-items: center; justify-content: center;
-      border: 0.5px solid rgba(0,0,0,0.12);
-      transition: transform 0.65s cubic-bezier(0.4,0,0.2,1);
-      backface-visibility: hidden; overflow: hidden;
-    }
+    .door-left, .door-right { position: absolute; top: 0; bottom: 0; width: 50%; z-index: 2; display: flex; align-items: center; justify-content: center; border: 0.5px solid rgba(0,0,0,0.12); transition: transform 0.65s cubic-bezier(0.4,0,0.2,1); backface-visibility: hidden; overflow: hidden; }
     .door-left  { left: 0;  border-radius: 10px 0 0 10px; transform-origin: left center; }
     .door-right { right: 0; border-radius: 0 10px 10px 0; transform-origin: right center; }
     .door.open .door-left  { transform: perspective(500px) rotateY(-115deg); }
     .door.open .door-right { transform: perspective(500px) rotateY(115deg); }
     .door.locked .door-left, .door.locked .door-right { opacity: 0.45; }
-
-    .door-num-wrap {
-      position: absolute; inset: 0;
-      display: flex; align-items: center; justify-content: center;
-      pointer-events: none;
-    }
-    .door-num {
-      font-family: 'Museo Sans', sans-serif;
-      font-size: clamp(20px, 3.5vw, 30px);
-      font-weight: 300;
-      line-height: 1;
-      white-space: nowrap;
-      position: absolute;
-    }
-
-    .divider {
-      position: absolute; top: 0; bottom: 0; left: 50%;
-      width: 1px; background: rgba(0,0,0,0.15); z-index: 3;
-      pointer-events: none; transition: opacity 0.4s;
-    }
+    .door-num-wrap { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+    .door-num { font-family: 'Museo Sans', sans-serif; font-size: clamp(20px, 3.5vw, 30px); font-weight: 300; line-height: 1; white-space: nowrap; position: absolute; }
+    .divider { position: absolute; top: 0; bottom: 0; left: 50%; width: 1px; background: rgba(0,0,0,0.15); z-index: 3; pointer-events: none; transition: opacity 0.4s; }
     .door.open .divider { opacity: 0; }
 
     /* ── Modal ── */
-
-    .modal-text a {
-    color: #a8d5b5;
-    text-decoration: underline;
-    }
-
-    .modal-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.65); z-index: 100;
-      align-items: center; justify-content: center;
-    }
+    .modal-text a { color: #a8d5b5; text-decoration: underline; }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 100; align-items: center; justify-content: center; }
     .modal-overlay.visible { display: flex; }
-
-    .modal {
-      background: #111d16;
-      border: 0.5px solid #2a4030;
-      border-radius: 16px;
-      padding: 2rem;
-      max-width: 400px; width: 92%;
-      position: relative;
-      animation: modal-in .32s cubic-bezier(0.34,1.56,0.64,1);
-      max-height: 90vh; overflow-y: auto;
-    }
-    @keyframes modal-in{from{opacity:0;transform:scale(0.85) translateY(14px)}to{opacity:1;transform:scale(1) translateY(0)}}
-
+    .modal { background: #111d16; border: 0.5px solid #2a4030; border-radius: 16px; padding: 2rem; max-width: 400px; width: 92%; position: relative; animation: modal-in .32s cubic-bezier(0.34,1.56,0.64,1); max-height: 90vh; overflow-y: auto; }
+    @keyframes modal-in { from{opacity:0;transform:scale(0.85) translateY(14px)} to{opacity:1;transform:scale(1) translateY(0)} }
     .modal-day { font-size: 12px; font-weight: 300; letter-spacing: .12em; text-transform: uppercase; color: #5a8a6a; margin-bottom: .4rem; }
     .modal-title { font-family: 'Museo Sans', sans-serif; font-size: 24px; font-weight: 300; margin: 0 0 1rem; color: #e8f5ee; line-height: 1.2; }
     .modal-media { width: 100%; border-radius: 8px; margin-bottom: 1rem; display: block; }
     .modal-video { width: 100%; border-radius: 8px; margin-bottom: 1rem; display: block; background: #000; }
-    .modal-text { font-size: 14px; line-height: 1.8; color: #8ac8a0; }
-
-    .modal-close {
-      position: absolute; top: 1rem; right: 1rem;
-      width: 30px; height: 30px;
-      border: 0.5px solid #2a4030; border-radius: 50%;
-      background: #1a2e20; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 14px; color: #6aab82; line-height: 1;
-    }
+    .modal-text { font-size: 14px; line-height: 1.8; color: #8ac8a0; margin-bottom: 1.5rem; }
+    .modal-close { position: absolute; top: 1rem; right: 1rem; width: 30px; height: 30px; border: 0.5px solid #2a4030; border-radius: 50%; background: #1a2e20; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #6aab82; line-height: 1; }
     .modal-close:hover { background: #223828; }
+
+    /* ── Registreringsskjema i modal ── */
+    .register-section { border-top: 0.5px solid #2a4030; padding-top: 1.25rem; margin-top: 0.5rem; }
+    .register-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #5a8a6a; margin-bottom: 0.75rem; display: block; }
+    .register-fields { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+    .register-input {
+      background: #1a2e20; border: 0.5px solid #2a4030; border-radius: 8px;
+      padding: 10px 14px; font-family: 'Museo Sans', sans-serif; font-weight: 300;
+      font-size: 13px; color: #e8f5ee; outline: none; width: 100%;
+      transition: border-color 0.2s;
+    }
+    .register-input::placeholder { color: #3a6040; }
+    .register-input:focus { border-color: #5a8a6a; }
+    .register-btn {
+      width: 100%; padding: 10px; background: #2a5a38; border: none;
+      border-radius: 8px; color: #a8d5b5; font-family: 'Museo Sans', sans-serif;
+      font-weight: 500; font-size: 13px; cursor: pointer; letter-spacing: 0.05em;
+      transition: background 0.2s;
+    }
+    .register-btn:hover { background: #336944; }
+    .register-btn:disabled { background: #1a3020; color: #3a6040; cursor: not-allowed; }
+    .register-status { font-size: 12px; margin-top: 8px; text-align: center; min-height: 18px; }
+    .register-status.ok  { color: #a8d5b5; }
+    .register-status.err { color: #f0b8cc; }
+    .register-confirmed { display: flex; align-items: center; gap: 8px; color: #a8d5b5; font-size: 13px; padding: 10px 0; }
+    .register-confirmed svg { flex-shrink: 0; }
   </style>
 </head>
 <body>
   <div class="cal-root">
     <div class="cal-header">
       <div class="reindeer-row">
-              <svg class="r-animal rein1" width="32" height="36" viewBox="0 0 32 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <line x1="8" y1="28" x2="6" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="12" y1="28" x2="10" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="18" y1="28" x2="16" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="22" y1="28" x2="20" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
-            <ellipse cx="15" cy="24" rx="9" ry="6" fill="#5a8a6a"/>
-            <ellipse cx="26" cy="18" rx="5" ry="4" fill="#5a8a6a"/>
-            <line x1="24" y1="14" x2="21" y2="8" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="28" y1="14" x2="31" y2="8" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="21" y1="8" x2="18" y2="5" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
-            <line x1="21" y1="8" x2="22" y2="4" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
-            <line x1="31" y1="8" x2="29" y2="4" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
-            <line x1="31" y1="8" x2="33" y2="4" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
-            <circle cx="29" cy="17" r="1" fill="#a8d5b5"/>
-          </svg>
-
-          <svg class="r-animal rein2" width="32" height="36" viewBox="0 0 32 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <line x1="8" y1="28" x2="6" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="12" y1="28" x2="10" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="18" y1="28" x2="16" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="22" y1="28" x2="20" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
-            <ellipse cx="15" cy="24" rx="9" ry="6" fill="#5a8a6a"/>
-            <ellipse cx="26" cy="18" rx="5" ry="4" fill="#5a8a6a"/>
-            <line x1="24" y1="14" x2="21" y2="8" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="28" y1="14" x2="31" y2="8" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="21" y1="8" x2="18" y2="5" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
-            <line x1="21" y1="8" x2="22" y2="4" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
-            <line x1="31" y1="8" x2="29" y2="4" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
-            <line x1="31" y1="8" x2="33" y2="4" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
-            <circle cx="29" cy="17" r="1" fill="#a8d5b5"/>
-          </svg>
-
-          <svg class="r-animal rein3" width="32" height="36" viewBox="0 0 32 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <line x1="8" y1="28" x2="6" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="12" y1="28" x2="10" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="18" y1="28" x2="16" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="22" y1="28" x2="20" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
-            <ellipse cx="15" cy="24" rx="9" ry="6" fill="#5a8a6a"/>
-            <ellipse cx="26" cy="18" rx="5" ry="4" fill="#5a8a6a"/>
-            <line x1="24" y1="14" x2="21" y2="8" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="28" y1="14" x2="31" y2="8" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="21" y1="8" x2="18" y2="5" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
-            <line x1="21" y1="8" x2="22" y2="4" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
-            <line x1="31" y1="8" x2="29" y2="4" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
-            <line x1="31" y1="8" x2="33" y2="4" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
-            <circle cx="29" cy="17" r="1" fill="#a8d5b5"/>
-          </svg>
-
-          <svg class="r-animal rein4" width="32" height="36" viewBox="0 0 32 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <line x1="8" y1="28" x2="6" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="12" y1="28" x2="10" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="18" y1="28" x2="16" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="22" y1="28" x2="20" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
-            <ellipse cx="15" cy="24" rx="9" ry="6" fill="#5a8a6a"/>
-            <ellipse cx="26" cy="18" rx="5" ry="4" fill="#5a8a6a"/>
-            <line x1="24" y1="14" x2="21" y2="8" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="28" y1="14" x2="31" y2="8" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="21" y1="8" x2="18" y2="5" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
-            <line x1="21" y1="8" x2="22" y2="4" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
-            <line x1="31" y1="8" x2="29" y2="4" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
-            <line x1="31" y1="8" x2="33" y2="4" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
-            <circle cx="29" cy="17" r="1" fill="#a8d5b5"/>
-          </svg>
-
-          <!-- Slede -->
-          <svg class="r-animal sled" width="60" height="36" viewBox="0 0 52 48" fill="none">
-            <!-- slede-kurv -->
-            <path d="M8 20 L8 12 C8 10 10 9 12 9 L40 9 C42 9 44 10 44 12 L44 20" stroke="#5a8a6a" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            <!-- sete/innhold -->
-            <rect x="14" y="9" width="10" height="5" rx="1.5" stroke="#5a8a6a" stroke-width="1.3" fill="none"/>
-            <rect x="28" y="9" width="10" height="5" rx="1.5" stroke="#5a8a6a" stroke-width="1.3" fill="none"/>
-            <!-- meier -->
-            <path d="M4 24 Q26 18 48 24" stroke="#5a8a6a" stroke-width="2" fill="none" stroke-linecap="round"/>
-            <path d="M6 28 Q26 22 46 28" stroke="#5a8a6a" stroke-width="2" fill="none" stroke-linecap="round"/>
-            <!-- vertikale støtter -->
-            <line x1="12" y1="20" x2="10" y2="24" stroke="#5a8a6a" stroke-width="1.3" stroke-linecap="round"/>
-            <line x1="26" y1="20" x2="26" y2="24" stroke="#5a8a6a" stroke-width="1.3" stroke-linecap="round"/>
-            <line x1="40" y1="20" x2="42" y2="24" stroke="#5a8a6a" stroke-width="1.3" stroke-linecap="round"/>
-          </svg>
-
-        </div>
+        <svg class="r-animal rein1" width="32" height="36" viewBox="0 0 32 36" fill="none">
+          <line x1="8" y1="28" x2="6" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="12" y1="28" x2="10" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="18" y1="28" x2="16" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="22" y1="28" x2="20" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
+          <ellipse cx="15" cy="24" rx="9" ry="6" fill="#5a8a6a"/>
+          <ellipse cx="26" cy="18" rx="5" ry="4" fill="#5a8a6a"/>
+          <line x1="24" y1="14" x2="21" y2="8" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="28" y1="14" x2="31" y2="8" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="21" y1="8" x2="18" y2="5" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="21" y1="8" x2="22" y2="4" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="31" y1="8" x2="29" y2="4" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="31" y1="8" x2="33" y2="4" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
+          <circle cx="29" cy="17" r="1" fill="#a8d5b5"/>
+        </svg>
+        <svg class="r-animal rein2" width="32" height="36" viewBox="0 0 32 36" fill="none">
+          <line x1="8" y1="28" x2="6" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="12" y1="28" x2="10" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="18" y1="28" x2="16" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="22" y1="28" x2="20" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
+          <ellipse cx="15" cy="24" rx="9" ry="6" fill="#5a8a6a"/>
+          <ellipse cx="26" cy="18" rx="5" ry="4" fill="#5a8a6a"/>
+          <line x1="24" y1="14" x2="21" y2="8" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="28" y1="14" x2="31" y2="8" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="21" y1="8" x2="18" y2="5" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="21" y1="8" x2="22" y2="4" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="31" y1="8" x2="29" y2="4" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="31" y1="8" x2="33" y2="4" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
+          <circle cx="29" cy="17" r="1" fill="#a8d5b5"/>
+        </svg>
+        <svg class="r-animal rein3" width="32" height="36" viewBox="0 0 32 36" fill="none">
+          <line x1="8" y1="28" x2="6" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="12" y1="28" x2="10" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="18" y1="28" x2="16" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="22" y1="28" x2="20" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
+          <ellipse cx="15" cy="24" rx="9" ry="6" fill="#5a8a6a"/>
+          <ellipse cx="26" cy="18" rx="5" ry="4" fill="#5a8a6a"/>
+          <line x1="24" y1="14" x2="21" y2="8" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="28" y1="14" x2="31" y2="8" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="21" y1="8" x2="18" y2="5" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="21" y1="8" x2="22" y2="4" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="31" y1="8" x2="29" y2="4" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="31" y1="8" x2="33" y2="4" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
+          <circle cx="29" cy="17" r="1" fill="#a8d5b5"/>
+        </svg>
+        <svg class="r-animal rein4" width="32" height="36" viewBox="0 0 32 36" fill="none">
+          <line x1="8" y1="28" x2="6" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="12" y1="28" x2="10" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="18" y1="28" x2="16" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="22" y1="28" x2="20" y2="36" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
+          <ellipse cx="15" cy="24" rx="9" ry="6" fill="#5a8a6a"/>
+          <ellipse cx="26" cy="18" rx="5" ry="4" fill="#5a8a6a"/>
+          <line x1="24" y1="14" x2="21" y2="8" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="28" y1="14" x2="31" y2="8" stroke="#5a8a6a" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="21" y1="8" x2="18" y2="5" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="21" y1="8" x2="22" y2="4" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="31" y1="8" x2="29" y2="4" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="31" y1="8" x2="33" y2="4" stroke="#5a8a6a" stroke-width="1.2" stroke-linecap="round"/>
+          <circle cx="29" cy="17" r="1" fill="#a8d5b5"/>
+        </svg>
+        <svg class="r-animal sled" width="60" height="36" viewBox="0 0 52 48" fill="none">
+          <path d="M8 20 L8 12 C8 10 10 9 12 9 L40 9 C42 9 44 10 44 12 L44 20" stroke="#5a8a6a" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="14" y="9" width="10" height="5" rx="1.5" stroke="#5a8a6a" stroke-width="1.3" fill="none"/>
+          <rect x="28" y="9" width="10" height="5" rx="1.5" stroke="#5a8a6a" stroke-width="1.3" fill="none"/>
+          <path d="M4 24 Q26 18 48 24" stroke="#5a8a6a" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M6 28 Q26 22 46 28" stroke="#5a8a6a" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <line x1="12" y1="20" x2="10" y2="24" stroke="#5a8a6a" stroke-width="1.3" stroke-linecap="round"/>
+          <line x1="26" y1="20" x2="26" y2="24" stroke="#5a8a6a" stroke-width="1.3" stroke-linecap="round"/>
+          <line x1="40" y1="20" x2="42" y2="24" stroke="#5a8a6a" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+      </div>
 
       <!-- ============================================================
            OVERSKRIFT OG UNDERTITTEL — endre teksten her
       ============================================================ -->
       <h1 class="cal-title">Advent 2026</h1>
       <p class="cal-subtitle">Presentert av Digitale Tjenster Support</p>
-
     </div>
+
     <div class="cal-grid" id="grid"></div>
     <p class="cal-footer">Vi ønsker deg en gledelig jul 🎅</p>
   </div>
@@ -344,62 +191,70 @@
         <source id="modal-video-src" src="" />
       </video>
       <p class="modal-text" id="modal-text"></p>
+
+      <!-- Registreringsseksjon – vises kun for dagens luke -->
+      <div class="register-section" id="register-section" style="display:none">
+        <span class="register-label">✓ Bekreft at du har lest denne luken</span>
+        <div id="register-form">
+          <div class="register-fields">
+            <input class="register-input" id="reg-name"  type="text"  placeholder="Navn" autocomplete="name" />
+            <input class="register-input" id="reg-email" type="email" placeholder="E-post" autocomplete="email" />
+          </div>
+          <button class="register-btn" id="reg-btn">Bekreft!</button>
+          <p class="register-status" id="reg-status"></p>
+        </div>
+        <div id="register-done" style="display:none">
+          <div class="register-confirmed">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <circle cx="9" cy="9" r="8.5" stroke="#a8d5b5"/>
+              <path d="M5 9l3 3 5-5" stroke="#a8d5b5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Du er registrert med ett lodd for denne luken!
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-     
+
   <script>
 
     /* ============================================================
+       SUPABASE-KONFIGURASJON
+       Fyll inn din egen URL og anon-nøkkel fra Supabase-dashbordet.
+       Gå til: Project Settings → API
+    ============================================================ */
+    const SUPABASE_URL = 'https://goqjqcfalzskglqgyvto.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_m3l84jlUWza7gW5QwAb5dw_9U3Gh3wt';
+    const KEY = (SUPABASE_ANON_KEY || "").trim();
+
+
+    /* ============================================================
        INNSTILLING: Hvilken dato er "i dag"?
-       Normalt settes denne automatisk. Sett til et tall (1-24) for
-       å overstyre, f.eks. under testing: const TODAY = 5;
+       Sett til et tall (1-24) for testing, f.eks: const TODAY = 5;
+       For produksjon, bruk den automatiske linjen under.
     ============================================================ */
     const now = new Date();
     const TODAY = 18;
     // const TODAY = (now.getMonth() === 11) ? now.getDate() : 0;
-    // I desember: viser luker t.o.m. dagens dato.
-    // Utenfor desember: TODAY = 0 → alle luker er låst (for testing, sett manuelt over).
 
 
     /* ============================================================
        FARGER PÅ LUKENE
-       Format: ['bakgrunnsfarge', 'tekstfarge']
-       Rekkefølgen gjentas syklisk for alle 24 luker.
-       Legg til, fjern eller endre fritt.
     ============================================================ */
     const DOOR_COLORS = [
-      ['#1a3a2a', '#a8d5b5'],   // mørk grønn / lys grønn
-      ['#3a1a2a', '#f0b8cc'],   // mørk rød   / lys rosa
-      ['#1a2a3a', '#b0c8e8'],   // mørk blå   / lys blå
-      ['#3a2a10', '#f0d090'],   // mørk brun  / gull
-      ['#2a1a3a', '#d0b0f0'],   // mørk lilla / lys lilla
-      ['#1a3030', '#a0e0e0'],   // mørk teal  / lys teal
-      ['#3a1a1a', '#f0b0b0'],   // mørk rød   / lys rød
-      ['#1a3a1a', '#a0f0b0'],   // mørk grønn / mint
+      ['#1a3a2a', '#a8d5b5'],
+      ['#3a1a2a', '#f0b8cc'],
+      ['#1a2a3a', '#b0c8e8'],
+      ['#3a2a10', '#f0d090'],
+      ['#2a1a3a', '#d0b0f0'],
+      ['#1a3030', '#a0e0e0'],
+      ['#3a1a1a', '#f0b0b0'],
+      ['#1a3a1a', '#a0f0b0'],
     ];
 
 
     /* ============================================================
        INNHOLD I LUKENE
-       Nøkkelen er lukenummeret (1–24).
-       Felter:
-         title  — tittel som vises øverst i modalen
-         text   — brødtekst
-         img    — relativ sti til bilde, f.eks. "images/luke1.jpg"
-                  eller null for ingen bilde
-         video  — relativ sti til video, f.eks. "video/luke1.mp4"
-                  eller null for ingen video
-                  (støtter også YouTube-embed-URL om du foretrekker det)
-
-       Tips for filstruktur:
-         index.html
-         images/
-           luke1.jpg
-           luke4.jpg
-           ...
-         video/
-           luke8.mp4
-           ...
     ============================================================ */
     const CONTENT = {
       1:  {
@@ -408,48 +263,13 @@
         img:   "img/santa test.png",
         video: null,
       },
-      2:  {
-        title: "En liten tanke",
-        text:  "Hva er du takknemlig for i dag? Skriv ned tre ting.",
-        img:   null,
-        video: null,
-      },
-      3:  {
-        title: "Musikk",
-        text:  "Sett på favorittjulesangen din og dans litt i stua.",
-        img:   null,
-        video: null,
-      },
-      4:  {
-        title: "Ute i naturen",
-        text:  "En kort spasertur i vinterkulden gjør underverker for humøret.",
-        img:   "images/luke4.jpg",
-        video: null,
-      },
-      5:  {
-        title: "Sjokolade",
-        text:  "Du fortjener en bit av noe godt i dag. Ingen unnskyldning trengs.",
-        img:   null,
-        video: null,
-      },
-      6:  {
-        title: "Julenissen",
-        text:  "Bare 19 dager til jul. Er du klar?",
-        img:   null,
-        video: null,
-      },
-      7:  {
-        title: "Lysene",
-        text:  "Tenn et lys i kveld. La det varme rommet litt ekstra.",
-        img:   "images/luke7.jpg",
-        video: null,
-      },
-      8:  {
-        title: "Dagens overraskelse",
-        text:  "Her er en liten hilsen til deg på denne dagen.",
-        img:   null,
-        video: "video/luke8.mp4",
-      },
+      2:  { title: "En liten tanke",      text: "Hva er du takknemlig for i dag? Skriv ned tre ting.", img: null, video: null },
+      3:  { title: "Musikk",              text: "Sett på favorittjulesangen din og dans litt i stua.", img: null, video: null },
+      4:  { title: "Ute i naturen",       text: "En kort spasertur i vinterkulden gjør underverker for humøret.", img: "images/luke4.jpg", video: null },
+      5:  { title: "Sjokolade",           text: "Du fortjener en bit av noe godt i dag. Ingen unnskyldning trengs.", img: null, video: null },
+      6:  { title: "Julenissen",          text: "Bare 19 dager til jul. Er du klar?", img: null, video: null },
+      7:  { title: "Lysene",              text: "Tenn et lys i kveld. La det varme rommet litt ekstra.", img: "images/luke7.jpg", video: null },
+      8:  { title: "Dagens overraskelse", text: "Her er en liten hilsen til deg på denne dagen.", img: null, video: "video/luke8.mp4" },
       9:  { title: "Luke 9",  text: "Fyll inn innhold her.", img: null, video: null },
       10: { title: "Luke 10", text: "Fyll inn innhold her.", img: null, video: null },
       11: { title: "Luke 11", text: "Fyll inn innhold her.", img: null, video: null },
@@ -470,7 +290,7 @@
 
 
     /* ============================================================
-       KALENDER-LOGIKK — ikke nødvendig å endre noe herfra og ned
+       KALENDER-LOGIKK
     ============================================================ */
     const grid    = document.getElementById('grid');
     const overlay = document.getElementById('overlay');
@@ -506,7 +326,6 @@
       rightHalf.style.background = bg;
 
       if (isSingle) {
-        // enkeltsiffer: tallet strekker seg over begge halvdeler
         const makeWrap = (side) => {
           const w = document.createElement('div');
           w.className = 'door-num-wrap';
@@ -522,7 +341,6 @@
         leftHalf.appendChild(makeWrap('left'));
         rightHalf.appendChild(makeWrap('right'));
       } else {
-        // tositret: første siffer til venstre, andre til høyre
         const makeDigit = (ch, side) => {
           const w = document.createElement('div');
           w.className = 'door-num-wrap';
@@ -551,15 +369,21 @@
       grid.appendChild(door);
     }
 
+    // Holder styr på hvilken luke som er åpen i modalen
+    let currentDoor = null;
+
     function openDoor(d, doorEl) {
+      currentDoor = d;
       const c = CONTENT[d] || { title: `Luke ${d}`, text: 'Innhold kommer snart.', img: null, video: null };
+
       document.getElementById('modal-day').textContent   = `${d}. desember`;
       document.getElementById('modal-title').textContent = c.title;
+
       if (c.html) {
-         document.getElementById('modal-text').innerHTML = c.html;
-        } else {
-        document.getElementById('modal-text').textContent = c.text;
-        }
+        document.getElementById('modal-text').innerHTML = c.html;
+      } else {
+        document.getElementById('modal-text').textContent = c.text || '';
+      }
 
       const img = document.getElementById('modal-img');
       if (c.img) { img.src = c.img; img.style.display = 'block'; }
@@ -570,13 +394,95 @@
       if (c.video) { vs.src = c.video; video.load(); video.style.display = 'block'; }
       else         { video.style.display = 'none'; video.pause(); }
 
+      // Vis registreringsseksjon KUN for dagens luke
+      const regSection = document.getElementById('register-section');
+      if (d === TODAY) {
+        regSection.style.display = 'block';
+        resetRegisterForm(d);
+      } else {
+        regSection.style.display = 'none';
+      }
+
       overlay.classList.add('visible');
       doorEl.classList.add('open');
     }
 
+    /* ── Registreringslogikk ── */
+
+    function resetRegisterForm(d) {
+      // Sjekk om brukeren allerede har registrert seg for denne luken (localStorage)
+      const key = `advent_registered_${d}`;
+      if (localStorage.getItem(key)) {
+        showConfirmed();
+      } else {
+        document.getElementById('register-form').style.display = 'block';
+        document.getElementById('register-done').style.display = 'none';
+        document.getElementById('reg-name').value  = '';
+        document.getElementById('reg-email').value = '';
+        document.getElementById('reg-status').textContent = '';
+        document.getElementById('reg-btn').disabled = false;
+      }
+    }
+
+    function showConfirmed() {
+      document.getElementById('register-form').style.display = 'none';
+      document.getElementById('register-done').style.display = 'block';
+    }
+
+    document.getElementById('reg-btn').addEventListener('click', async () => {
+      const name  = document.getElementById('reg-name').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
+      const status = document.getElementById('reg-status');
+
+      if (!name)  { status.textContent = 'Vennligst fyll inn navn.'; status.className = 'register-status err'; return; }
+      if (!email || !email.includes('@')) { status.textContent = 'Vennligst fyll inn en gyldig e-post.'; status.className = 'register-status err'; return; }
+
+      const btn = document.getElementById('reg-btn');
+      btn.disabled = true;
+      status.textContent = 'Registrerer…';
+      status.className = 'register-status';
+
+      try {
+        
+          console.log("SUPABASE_URL:", SUPABASE_URL);
+          console.log("ANON length:", SUPABASE_ANON_KEY?.length);
+          console.log("ANON prefix:", SUPABASE_ANON_KEY?.slice(0, 25));
+          console.log("Payload:", { door: currentDoor, name, email });
+
+          const res = await fetch(`${SUPABASE_URL}/rest/v1/readings`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'apikey': KEY,
+              'Authorization': `Bearer ${KEY}`,
+              'Prefer': 'resolution=ignore-duplicates,return=minimal'
+            },
+            body: JSON.stringify({ door: currentDoor, name, email })
+          });
+
+          if (!res.ok) {
+            const text = await res.text();
+            throw new Error(`HTTP ${res.status}: ${text}`);
+          }
+
+          else {
+          const err = await res.json();
+          throw new Error(err.message || res.status);
+        }
+      } catch (e) {
+        status.textContent = 'Noe gikk galt. Prøv igjen.';
+        status.className = 'register-status err';
+        btn.disabled = false;
+        console.error(e);
+      }
+    });
+
+    /* ── Lukk modal ── */
     function closeModal() {
       overlay.classList.remove('visible');
       document.getElementById('modal-video').pause();
+      currentDoor = null;
     }
 
     document.getElementById('modal-close').addEventListener('click', closeModal);
