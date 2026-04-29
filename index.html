@@ -225,7 +225,23 @@
     ============================================================ */
     const SUPABASE_URL = 'https://goqjqcfalzskglqgyvto.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdvcWpxY2ZhbHpza2dscWd5dnRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0NTcwMDIsImV4cCI6MjA5MzAzMzAwMn0.Gq10oBQWUV1QR2nzj1rWJ6Rm8dTSYWkNHFbLW_YruVc';
-    const KEY = (SUPABASE_ANON_KEY || "").trim();
+    const KEY = (SUPABASE_ANON_KEY || '').trim();
+
+    
+console.error('KEY length:', KEY.length);
+console.error('KEY prefix:', KEY.slice(0, 15));
+console.error('KEY suffix:', KEY.slice(-15));
+
+if (KEY.split('.').length === 3) {
+  const payload = JSON.parse(atob(KEY.split('.')[1]));
+  console.error('JWT role:', payload.role);
+  console.error('JWT ref :', payload.ref);
+} else {
+  console.error('KEY is NOT a JWT (expected eyJ...)');
+}
+
+console.error('URL:', SUPABASE_URL);
+
 
 
     /* ============================================================
