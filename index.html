@@ -477,15 +477,13 @@ console.error('URL:', SUPABASE_URL);
             body: JSON.stringify({ door: currentDoor, name, email })
           });
 
-          if (!res.ok) {
+          if (res.ok) {
+            localStorage.setItem(`advent_registered_${currentDoor}`, '1');
+            showConfirmed();
+          } else {
             const text = await res.text();
             throw new Error(`HTTP ${res.status}: ${text}`);
           }
-
-          else {
-          const err = await res.json();
-          throw new Error(err.message || res.status);
-        }
       } catch (e) {
         status.textContent = 'Noe gikk galt. Prøv igjen.';
         status.className = 'register-status err';
