@@ -458,38 +458,48 @@ console.error('URL:', SUPABASE_URL);
       status.textContent = 'Registrerer…';
       status.className = 'register-status';
 
+
       try {
-        
-          console.log("SUPABASE_URL:", SUPABASE_URL);
-          console.log("ANON length:", SUPABASE_ANON_KEY?.length);
-          console.log("ANON prefix:", SUPABASE_ANON_KEY?.slice(0, 25));
-          console.log("Payload:", { door: currentDoor, name, email });
+        console.log("Payload:", { door: currentDoor, name, email });
 
-          const res = await fetch(`${SUPABASE_URL}/rest/v1/readings`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json',
-              'apikey': KEY,
-              'Authorization': `Bearer ${KEY}`,
-              'Prefer': 'resolution=ignore-duplicates,return=minimal'
-            },
-            body: JSON.stringify({ door: currentDoor, name, email })
-          });
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/readings`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'apikey': KEY,
+            'Authorization': `Bearer ${KEY}`,
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({ door: currentDoor, name, email })
+        });
 
-          if (res.ok) {
-            localStorage.setItem(`advent_registered_${currentDoor}`, '1');
-            showConfirmed();
+        if (res.ok) {
+          localStorage.setItem(`advent_registered_${currentDoor}`, '1');
+          showConfirmed();
+        } else {
+          const text = await res.text();
+
+          if (res.status === 409 && text.includes('readings_door_email_key')) {
+            status.textContent = 'Du har allerede registrert deg for denne luken.';
           } else {
-            const text = await res.text();
-            throw new Error(`HTTP ${res.status}: ${text}`);
+            status.textContent = 'Noe gikk galt. Prøv igjen.';
           }
+
+          status.className = 'register-status err';
+          btn.disabled = false;
+
+          console.error('Supabase error:', res.status, text);
+        }
+
       } catch (e) {
         status.textContent = 'Noe gikk galt. Prøv igjen.';
         status.className = 'register-status err';
         btn.disabled = false;
         console.error(e);
       }
+
+
     });
 
     /* ── Lukk modal ── */
